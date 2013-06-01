@@ -88,6 +88,33 @@ var Graph = function(width, height) {
   	this.removedEdges.push([cell1, cell2]);
   };
 
+  this.removeAllEdges = function() {
+    for(var i = 0; i < this.width; i++) {
+      for(var j = 0; j < this.height; j++) {
+        var cell1 = this.getCellAt(i, j);
+        var cell2 = this.getCellAt(i + 1, j);
+        var cell3 = this.getCellAt(i, j + 1);
+        if (cell2) {
+          this.removedEdges.push([cell1, cell2]);
+        }
+        if (cell3) {
+          this.removedEdges.push([cell1, cell3]);
+        }
+      }
+    }
+  };
+
+  this.addEdgeBetween = function(cell1, cell2) {
+    _.each(this.removedEdges, function(edge, index) {
+      if (
+        (edge[0] == cell1 && edge[1] == cell2)
+        || (edge[0] == cell2 && edge[1] == cell1)
+      ) {
+        this.removedEdges.splice(index, 1);
+      }
+    }, this);
+  };
+
   for(var i = 0; i < this.width; i++) {
   	this.cells.push([]);
   	row = this.cells[i];

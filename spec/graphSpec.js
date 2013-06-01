@@ -128,4 +128,55 @@ describe("Graph", function() {
       expect(graph.areConnected(cell1, cell2)).toBeFalsy();
     });
   });
+
+  describe('removeAllEdges', function() {
+    it('should remove all walls', function() {
+      graph.removeAllEdges();
+      
+      for(var i = 0; i < 30; i++) {
+        for(var j = 0; j < 30; j++) {
+          var cell = graph.cells[i][j];
+          expect(graph.cellConnectedNeighbors(cell).length).toEqual(0);
+        }
+      }
+    });
+  });
+
+  describe('addEdgeBetween', function() {
+    beforeEach(function() {
+      graph.removeAllEdges();
+    });
+
+    it('should add wall to neighbor on the top', function() { 
+      var cell1 = graph.getCellAt(2, 2);
+      var cell2 = graph.getCellAt(2, 1);
+      expect(graph.areConnected(cell1, cell2)).toBeFalsy();
+      graph.addEdgeBetween(cell1, cell2);
+      expect(graph.areConnected(cell1, cell2)).toBeTruthy();
+    });
+
+    it('should add wall to neighbor on the right', function() { 
+      var cell1 = graph.getCellAt(2, 2);
+      var cell2 = graph.getCellAt(3, 2);
+      expect(graph.areConnected(cell1, cell2)).toBeFalsy();
+      graph.addEdgeBetween(cell1, cell2);
+      expect(graph.areConnected(cell1, cell2)).toBeTruthy();
+    });
+
+    it('should add wall to neighbor on the bottom', function() { 
+      var cell1 = graph.getCellAt(2, 2);
+      var cell2 = graph.getCellAt(2, 3);
+      expect(graph.areConnected(cell1, cell2)).toBeFalsy();
+      graph.addEdgeBetween(cell1, cell2);
+      expect(graph.areConnected(cell1, cell2)).toBeTruthy();
+    });
+
+    it('should add wall to neighbor on the left', function() { 
+      var cell1 = graph.getCellAt(2, 2);
+      var cell2 = graph.getCellAt(1, 2);
+      expect(graph.areConnected(cell1, cell2)).toBeFalsy();
+      graph.addEdgeBetween(cell1, cell2);
+      expect(graph.areConnected(cell1, cell2)).toBeTruthy();
+    });
+  });  
 });
