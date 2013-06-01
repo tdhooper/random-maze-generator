@@ -32,22 +32,26 @@
     <script src="src/array.js"></script>
     <script src="src/cell.js"></script>
     <script src="src/mazeGenerator.js"></script>
+    <script src="src/mazeSolver.js"></script>
     <script src="src/graph.js"></script>
     <script src="src/maze.js"></script>
     <script>
         var maze = new Maze(document, 'maze');
+        var generator = new MazeGenerator(30, 30);
+        var solver = new MazeSolver();
         var waitElem = $("#pleasewait");
         
         setTimeout(function() {
-            maze.generate();
-            maze.draw();
+            generator.generate();
+            maze.draw(generator.graph);
             waitElem.remove();
             $("#solve").show();
         }, 1000);
 
         $(function() {
             $('#solve').click(function() {
-                maze.solve();
+                var path = solver.solve(generator.graph);
+                maze.drawSolution(path);
             });
         });
     </script>

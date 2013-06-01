@@ -3,11 +3,6 @@ var Maze = function(doc, elemId) {
   this.width = this.canvas.width;
   this.height = this.canvas.height;
   this.ctx = this.canvas.getContext('2d');
-  this.horizCells = 30;
-  this.vertCells = 30;
-  this.generator = new MazeGenerator(this.horizCells, this.vertCells);
-  this.cellWidth = this.width / this.horizCells;
-  this.cellHeight = this.height / this.vertCells;
   
   var self = this;
 
@@ -23,30 +18,23 @@ var Maze = function(doc, elemId) {
       return self.height;
     },
 
-    generate: function () {
-      self.generator.generate();
+    draw: function(graph) {
+      self.cellWidth = self.width / graph.width;
+      self.cellHeight = self.height / graph.height;
+
+      this.drawBorders(graph);
+      this.drawMaze(graph);
     },
 
-    draw: function() {
-      this.drawBorders();
-      this.drawMaze();
-    },
+    drawBorders: function(graph) {
 
-    solve: function() {
-      self.generator.solve();
-      this.drawSolution();
-    },
-
-    drawBorders: function() {
       this.drawLine(self.cellWidth, 0, self.width, 0);
       this.drawLine(self.width, 0, self.width, self.height);
       this.drawLine(self.width - self.cellWidth, self.height, 0, self.height);
       this.drawLine(0, self.height, 0, 0);
     },
 
-    drawSolution: function() {
-      var path = self.generator.path;
-      
+    drawSolution: function(path) {
       for(var i = 0; i < path.length; i++) {
         (function () {
           var cell = path[i];
@@ -59,8 +47,7 @@ var Maze = function(doc, elemId) {
       }
     },
 
-    drawMaze: function() {
-      var graph = self.generator.graph;
+    drawMaze: function(graph) {
       var drawnEdges = [];
 
       var edgeAlreadyDrawn = function(cell1, cell2) {
